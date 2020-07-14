@@ -8,6 +8,8 @@ let mongoSanitize = require("express-mongo-sanitize");
 let xss = require("xss-clean");
 let cookieParser = require("cookie-parser");
 let compression = require("compression");
+let cors = require("cors");
+let hpp = require("hpp");
 
 let tourRoutes = require("./routes/tourRoutes");
 let userRoutes = require("./routes/userRoutes");
@@ -15,13 +17,14 @@ let reviewRouter = require("./routes/reviewRouter");
 let ApiError = require("./utils/ApiError");
 let errorController = require("./controllers/errorController");
 
-let hpp = require("hpp");
-
 dotenv.config({ path: path.join(__dirname, ".env") });
 let morgan = require("morgan");
 
 //helmet
 app.use(helmet());
+//cors
+app.use(cors());
+app.options("*", cors());
 //compression
 app.use(compression());
 //create limiter obj
