@@ -15,7 +15,7 @@ mongoose
   .catch((err) => console.log(err));
 
 let PORT = process.env.PORT || 3000;
-let server = app.listen(PORT, "0.0.0.0", () => console.log("on 8000"));
+let server = app.listen(PORT, "0.0.0.0", () => console.log(`on Port ${PORT}`));
 
 process.on("unhandledRejection", (err) => {
   console.log(err.name);
