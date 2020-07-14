@@ -15,8 +15,15 @@ mongoose
   .catch((err) => console.log(err));
 
 let PORT = process.env.PORT || 3000;
-app.listen(PORT, "0.0.0.0", () => console.log("on 8000"));
+let server = app.listen(PORT, "0.0.0.0", () => console.log("on 8000"));
 
 process.on("unhandledRejection", (err) => {
   console.log(err.name);
+});
+
+process.on("SIGTERM", () => {
+  console.log("Shutting down gracefully");
+  server.close(() => {
+    console.log("process terminated");
+  });
 });
