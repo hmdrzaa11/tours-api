@@ -24,7 +24,7 @@ let reviewSchema = new Schema(
   }
 );
 
-//here we want to populate the user and tour
+
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
@@ -34,7 +34,7 @@ reviewSchema.pre(/^find/, function (next) {
 });
 
 reviewSchema.statics.calculateRating = async function (tourId) {
-  //here we need to select all reviews that belong to the tour id we got
+
   let stats = await this.aggregate([
     {
       $match: {
@@ -49,7 +49,7 @@ reviewSchema.statics.calculateRating = async function (tourId) {
       },
     },
   ]);
-  //we need to get the tour itself from its model and then update the data on it
+ 
   let tour = await Tour.findById(tourId);
   console.log(stats);
   if (stats.length) {
@@ -60,16 +60,12 @@ reviewSchema.statics.calculateRating = async function (tourId) {
 };
 
 reviewSchema.post("save", async function () {
-  // "this" refers to the Document itself
-  // how we can access the Model in here to call the static method
-  // any "object" has a call to its constructor
-  await this.constructor.calculateRating(this.tour); //here we pass the Tour id to it because we need it
+  
+  await this.constructor.calculateRating(this.tour); 
 });
 
 reviewSchema.pre(/^findOneAnd/, async function (next) {
-  //because mongoose uses the mongodb driver so if we put this this will run for "findOneById..."
-  //we can execute the query and that will give us a document that is processing
-  //we can attach the 'findOne()' and await it
+
   let doc = await this.findOne();
   //here we attach the doc to "this"
   this.doc = doc;
